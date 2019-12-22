@@ -4,6 +4,7 @@ const multer = require('multer');
 const PDFImage = require('pdf-image').PDFImage;
 const Joi = require('joi');
 const fs = require('fs').promises;
+const CronJob = require('cron').CronJob;
 
 const app = express();
 
@@ -52,6 +53,21 @@ app.get('/:id/:index', async function (req, res) {
         console.error(err);
         return res.status(500).send({message: 'An error occurred while retrieving the PDF.'});
     }
+});
+
+new CronJob({
+    cronTime: process.env.CLEANUP_CRON || '0 0 * * * *',
+    onTick: async function () {
+        const dir = await fs.readdir('./tmp');
+        for (let file of dir) {
+            const stat = await fs.stat(`./tmp/${file}`);
+            if ((Date.now() - stat.birthtime) >= (process.env.TTL || 3600000)) {
+                await fs.unlink(`./tmp/${file}`)
+            }
+        }
+    },
+    start: true,
+    runOnInit: true
 });
 
 module.exports = app;
