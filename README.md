@@ -11,6 +11,12 @@ Start the server with `npm start`
 
 The API is exposed in port 3000 (or whatever PORT variable is specified in the environment).
 
-A POST request to `/` with a pdf file with field name `pdf` will return a JSON object with the request ID as the field `requestId`.
+A POST request to `/` with a pdf file with field name `pdf` will return a JSON object with the schema
+```
+{
+    requestId: The request ID,
+    pages: The number of pages
+}
+```
 
-To retrieve the images, use a GET request to `/requestId/index` where requestID is the returned request ID from the POST request, and index is the index of the image.
+To retrieve the images, use a GET request to `/requestId/index` where requestID is the returned request ID from the POST request, and index is the index of the image (starting at 0).

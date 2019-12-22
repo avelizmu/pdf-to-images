@@ -15,7 +15,10 @@ app.post('/', partUpload.single('pdf'), async function (req, res) {
     try {
         const pdf = new PDFImage(req.file.path);
         const paths = await pdf.convertFile();
-        res.send({requestId: req.file.filename});
+        res.send({
+            requestId: req.file.filename,
+            pages: paths.length
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send({message: 'An error has occurred.'})
