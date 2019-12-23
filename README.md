@@ -1,6 +1,9 @@
 # pdf-to-images
 RESTful API that converts PDF files into PNG images
 
+### Dependencies
+This required `imagemagick`, `ghostscript`, and `poppler` installed in your system to run properly
+
 ### Install Instructions
 * `git clone https://github.com/aveliz1999/pdf-to-images`
 * `cd pdf-to-images`
